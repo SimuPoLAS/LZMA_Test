@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|Win32">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|Win32">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{1B5D7CFA-6404-3202-A8D3-FFE40F184A30}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>Win32</Platform>
+    <ProjectName>ALL_BUILD</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>D:\SimuPoLAS\Programmieren\xz\src\liblzma\api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>D:\SimuPoLAS\Programmieren\xz\src\liblzma\api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>D:\SimuPoLAS\Programmieren\xz\src\liblzma\api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>D:\SimuPoLAS\Programmieren\xz\src\liblzma\api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\SimuPoLAS\Programmieren\LZMA_Test\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule D:/SimuPoLAS/Programmieren/LZMA_Test/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+E:\CMake\bin\cmake.exe -HD:/SimuPoLAS/Programmieren/LZMA_Test -BD:/SimuPoLAS/Programmieren/LZMA_Test/build --check-stamp-file D:/SimuPoLAS/Programmieren/LZMA_Test/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:/SimuPoLAS/Programmieren/LZMA_Test/CMakeLists.txt;D:\SimuPoLAS\Programmieren\LZMA_Test\CMakeLists.txt;D:\SimuPoLAS\Programmieren\LZMA_Test\build\CMakeFiles\3.9.2\CMakeSystem.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeSystemSpecificInitialize.cmake;D:\SimuPoLAS\Programmieren\LZMA_Test\build\CMakeFiles\3.9.2\CMakeCCompiler.cmake;D:\SimuPoLAS\Programmieren\LZMA_Test\build\CMakeFiles\3.9.2\CMakeCXXCompiler.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeSystemSpecificInformation.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeGenericSystem.cmake;E:\CMake\share\cmake-3.9\Modules\Platform\Windows.cmake;E:\CMake\share\cmake-3.9\Modules\Platform\WindowsPaths.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeCInformation.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeLanguageInformation.cmake;E:\CMake\share\cmake-3.9\Modules\Platform\Windows-MSVC-C.cmake;E:\CMake\share\cmake-3.9\Modules\Platform\Windows-MSVC.cmake;D:\SimuPoLAS\Programmieren\LZMA_Test\build\CMakeFiles\3.9.2\CMakeRCCompiler.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeRCInformation.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeCommonLanguageInclude.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeCXXInformation.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeLanguageInformation.cmake;E:\CMake\share\cmake-3.9\Modules\Compiler\MSVC-CXX.cmake;E:\CMake\share\cmake-3.9\Modules\Compiler\CMakeCommonCompilerMacros.cmake;E:\CMake\share\cmake-3.9\Modules\Platform\Windows-MSVC-CXX.cmake;E:\CMake\share\cmake-3.9\Modules\Platform\Windows-MSVC.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeCommonLanguageInclude.cmake;E:\CMake\share\cmake-3.9\Modules\FindLibLZMA.cmake;E:\CMake\share\cmake-3.9\Modules\CheckLibraryExists.cmake;E:\CMake\share\cmake-3.9\Modules\CheckFunctionExists.c;E:\CMake\share\cmake-3.9\Modules\CheckFunctionExists.c;E:\CMake\share\cmake-3.9\Modules\CheckFunctionExists.c;E:\CMake\share\cmake-3.9\Modules\FindPackageHandleStandardArgs.cmake;E:\CMake\share\cmake-3.9\Modules\FindPackageMessage.cmake;D:\SimuPoLAS\Programmieren\LZMA_Test\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\SimuPoLAS\Programmieren\LZMA_Test\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule D:/SimuPoLAS/Programmieren/LZMA_Test/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+E:\CMake\bin\cmake.exe -HD:/SimuPoLAS/Programmieren/LZMA_Test -BD:/SimuPoLAS/Programmieren/LZMA_Test/build --check-stamp-file D:/SimuPoLAS/Programmieren/LZMA_Test/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:/SimuPoLAS/Programmieren/LZMA_Test/CMakeLists.txt;D:\SimuPoLAS\Programmieren\LZMA_Test\CMakeLists.txt;D:\SimuPoLAS\Programmieren\LZMA_Test\build\CMakeFiles\3.9.2\CMakeSystem.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeSystemSpecificInitialize.cmake;D:\SimuPoLAS\Programmieren\LZMA_Test\build\CMakeFiles\3.9.2\CMakeCCompiler.cmake;D:\SimuPoLAS\Programmieren\LZMA_Test\build\CMakeFiles\3.9.2\CMakeCXXCompiler.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeSystemSpecificInformation.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeGenericSystem.cmake;E:\CMake\share\cmake-3.9\Modules\Platform\Windows.cmake;E:\CMake\share\cmake-3.9\Modules\Platform\WindowsPaths.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeCInformation.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeLanguageInformation.cmake;E:\CMake\share\cmake-3.9\Modules\Platform\Windows-MSVC-C.cmake;E:\CMake\share\cmake-3.9\Modules\Platform\Windows-MSVC.cmake;D:\SimuPoLAS\Programmieren\LZMA_Test\build\CMakeFiles\3.9.2\CMakeRCCompiler.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeRCInformation.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeCommonLanguageInclude.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeCXXInformation.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeLanguageInformation.cmake;E:\CMake\share\cmake-3.9\Modules\Compiler\MSVC-CXX.cmake;E:\CMake\share\cmake-3.9\Modules\Compiler\CMakeCommonCompilerMacros.cmake;E:\CMake\share\cmake-3.9\Modules\Platform\Windows-MSVC-CXX.cmake;E:\CMake\share\cmake-3.9\Modules\Platform\Windows-MSVC.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeCommonLanguageInclude.cmake;E:\CMake\share\cmake-3.9\Modules\FindLibLZMA.cmake;E:\CMake\share\cmake-3.9\Modules\CheckLibraryExists.cmake;E:\CMake\share\cmake-3.9\Modules\CheckFunctionExists.c;E:\CMake\share\cmake-3.9\Modules\CheckFunctionExists.c;E:\CMake\share\cmake-3.9\Modules\CheckFunctionExists.c;E:\CMake\share\cmake-3.9\Modules\FindPackageHandleStandardArgs.cmake;E:\CMake\share\cmake-3.9\Modules\FindPackageMessage.cmake;D:\SimuPoLAS\Programmieren\LZMA_Test\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\SimuPoLAS\Programmieren\LZMA_Test\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule D:/SimuPoLAS/Programmieren/LZMA_Test/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+E:\CMake\bin\cmake.exe -HD:/SimuPoLAS/Programmieren/LZMA_Test -BD:/SimuPoLAS/Programmieren/LZMA_Test/build --check-stamp-file D:/SimuPoLAS/Programmieren/LZMA_Test/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">D:/SimuPoLAS/Programmieren/LZMA_Test/CMakeLists.txt;D:\SimuPoLAS\Programmieren\LZMA_Test\CMakeLists.txt;D:\SimuPoLAS\Programmieren\LZMA_Test\build\CMakeFiles\3.9.2\CMakeSystem.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeSystemSpecificInitialize.cmake;D:\SimuPoLAS\Programmieren\LZMA_Test\build\CMakeFiles\3.9.2\CMakeCCompiler.cmake;D:\SimuPoLAS\Programmieren\LZMA_Test\build\CMakeFiles\3.9.2\CMakeCXXCompiler.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeSystemSpecificInformation.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeGenericSystem.cmake;E:\CMake\share\cmake-3.9\Modules\Platform\Windows.cmake;E:\CMake\share\cmake-3.9\Modules\Platform\WindowsPaths.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeCInformation.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeLanguageInformation.cmake;E:\CMake\share\cmake-3.9\Modules\Platform\Windows-MSVC-C.cmake;E:\CMake\share\cmake-3.9\Modules\Platform\Windows-MSVC.cmake;D:\SimuPoLAS\Programmieren\LZMA_Test\build\CMakeFiles\3.9.2\CMakeRCCompiler.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeRCInformation.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeCommonLanguageInclude.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeCXXInformation.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeLanguageInformation.cmake;E:\CMake\share\cmake-3.9\Modules\Compiler\MSVC-CXX.cmake;E:\CMake\share\cmake-3.9\Modules\Compiler\CMakeCommonCompilerMacros.cmake;E:\CMake\share\cmake-3.9\Modules\Platform\Windows-MSVC-CXX.cmake;E:\CMake\share\cmake-3.9\Modules\Platform\Windows-MSVC.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeCommonLanguageInclude.cmake;E:\CMake\share\cmake-3.9\Modules\FindLibLZMA.cmake;E:\CMake\share\cmake-3.9\Modules\CheckLibraryExists.cmake;E:\CMake\share\cmake-3.9\Modules\CheckFunctionExists.c;E:\CMake\share\cmake-3.9\Modules\CheckFunctionExists.c;E:\CMake\share\cmake-3.9\Modules\CheckFunctionExists.c;E:\CMake\share\cmake-3.9\Modules\FindPackageHandleStandardArgs.cmake;E:\CMake\share\cmake-3.9\Modules\FindPackageMessage.cmake;D:\SimuPoLAS\Programmieren\LZMA_Test\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">D:\SimuPoLAS\Programmieren\LZMA_Test\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule D:/SimuPoLAS/Programmieren/LZMA_Test/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+E:\CMake\bin\cmake.exe -HD:/SimuPoLAS/Programmieren/LZMA_Test -BD:/SimuPoLAS/Programmieren/LZMA_Test/build --check-stamp-file D:/SimuPoLAS/Programmieren/LZMA_Test/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">D:/SimuPoLAS/Programmieren/LZMA_Test/CMakeLists.txt;D:\SimuPoLAS\Programmieren\LZMA_Test\CMakeLists.txt;D:\SimuPoLAS\Programmieren\LZMA_Test\build\CMakeFiles\3.9.2\CMakeSystem.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeSystemSpecificInitialize.cmake;D:\SimuPoLAS\Programmieren\LZMA_Test\build\CMakeFiles\3.9.2\CMakeCCompiler.cmake;D:\SimuPoLAS\Programmieren\LZMA_Test\build\CMakeFiles\3.9.2\CMakeCXXCompiler.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeSystemSpecificInformation.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeGenericSystem.cmake;E:\CMake\share\cmake-3.9\Modules\Platform\Windows.cmake;E:\CMake\share\cmake-3.9\Modules\Platform\WindowsPaths.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeCInformation.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeLanguageInformation.cmake;E:\CMake\share\cmake-3.9\Modules\Platform\Windows-MSVC-C.cmake;E:\CMake\share\cmake-3.9\Modules\Platform\Windows-MSVC.cmake;D:\SimuPoLAS\Programmieren\LZMA_Test\build\CMakeFiles\3.9.2\CMakeRCCompiler.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeRCInformation.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeCommonLanguageInclude.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeCXXInformation.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeLanguageInformation.cmake;E:\CMake\share\cmake-3.9\Modules\Compiler\MSVC-CXX.cmake;E:\CMake\share\cmake-3.9\Modules\Compiler\CMakeCommonCompilerMacros.cmake;E:\CMake\share\cmake-3.9\Modules\Platform\Windows-MSVC-CXX.cmake;E:\CMake\share\cmake-3.9\Modules\Platform\Windows-MSVC.cmake;E:\CMake\share\cmake-3.9\Modules\CMakeCommonLanguageInclude.cmake;E:\CMake\share\cmake-3.9\Modules\FindLibLZMA.cmake;E:\CMake\share\cmake-3.9\Modules\CheckLibraryExists.cmake;E:\CMake\share\cmake-3.9\Modules\CheckFunctionExists.c;E:\CMake\share\cmake-3.9\Modules\CheckFunctionExists.c;E:\CMake\share\cmake-3.9\Modules\CheckFunctionExists.c;E:\CMake\share\cmake-3.9\Modules\FindPackageHandleStandardArgs.cmake;E:\CMake\share\cmake-3.9\Modules\FindPackageMessage.cmake;D:\SimuPoLAS\Programmieren\LZMA_Test\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">D:\SimuPoLAS\Programmieren\LZMA_Test\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="D:\SimuPoLAS\Programmieren\LZMA_Test\build\ZERO_CHECK.vcxproj">
+      <Project>{5A459326-2876-3F59-A871-87A1C7511EB5}</Project>
+      <Name>ZERO_CHECK</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\SimuPoLAS\Programmieren\LZMA_Test\build\LZMA_Test.vcxproj">
+      <Project>{7E959559-C572-31DF-B683-8F510948F50A}</Project>
+      <Name>LZMA_Test</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
