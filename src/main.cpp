@@ -39,7 +39,8 @@ static void xzCompress(const std::string& from, std::string& to) {
 
 	// lzma stream encoder is inizialized
 	// LZMA_CHECK_CRC32 can be used because we will not compress big files
-	if (lzma_easy_encoder(&strm, 6, LZMA_CHECK_CRC64) != LZMA_OK) throw std::runtime_error("!lzma_easy_encoder");
+	/* if (lzma_easy_encoder(&strm, 6, LZMA_CHECK_CRC64) != LZMA_OK) throw std::runtime_error("!lzma_easy_encoder"); */
+	if (lzma_easy_encoder(&strm, 6, LZMA_CHECK_CRC32) != LZMA_OK) throw std::runtime_error("!lzma_easy_encoder");
 
 	// The next input byte is set
 	strm.next_in = (const uint8_t*)from.data();
@@ -102,10 +103,12 @@ static void xzDecompress(const char* data, int length, std::string& to) {
 	//		A decoder flag is set
 	// LZMA_CONCATENATED can not be used unsless the file is saved as .xz
 	// We should probably use LZMA_TELL_NO_CHECK
-	lzma_ret rc = lzma_stream_decoder(&strm, 99 * 1024 * 1024, LZMA_CONCATENATED);
+	/* lzma_ret rc = lzma_stream_decoder(&strm, 99 * 1024 * 1024, LZMA_CONCATENATED); */
+	/*lzma_ret rc = lzma_stream_decoder(&strm, 99 * 1024 * 1024, LZMA_TELL_NO_CHECK);*/
 
 	// If the inizializitasion of lzma_stream_decoder wasa not successful an error is thrown
-	if (rc != LZMA_OK) std::runtime_error("!lzma_stream_decoder: " + std::to_string(rc));
+	/* if (rc != LZMA_OK) std::runtime_error("!lzma_stream_decoder: " + std::to_string(rc)); */
+	if (lzma_stream_decoder(&strm, 99 * 1024 * 1024, LZMA_TELL_NO_CHECK) != LZMA_OK) std::runtime_error("!lzma_stream_decoder!");
 
 	uint8_t outbuf[4096];
 	// The next output position is set
@@ -114,23 +117,30 @@ static void xzDecompress(const char* data, int length, std::string& to) {
 	strm.avail_out = sizeof outbuf;
 
 	// A variable to write the decompressed data to the output string is created
-	auto&& flush = [&]() {
+	/* auto&& flush = [&]() {
 		// The decompressed data is written to the output string
 		to.append((const char*)outbuf, sizeof(outbuf) - strm.avail_out);
 		// The next output position is reset 
 		strm.next_out = outbuf;
 		// The amount of free space in next_out is reset
 		strm.avail_out = sizeof outbuf;
-	};
+	}; */
 
 	// As long as there is something to decompress this loop is run
 	while (strm.avail_in != 0) {
 		// lzma_code is decompressing the input
 		// rc is waiting for a return from lzma_code
-		rc = lzma_code(&strm, LZMA_FINISH);
+		/* rc = lzma_code(&strm, LZMA_FINISH); */
+		lzma_ret rc = lzma_code(&strm, LZMA_FINISH);
 
 		// The decompressed data is written to the output string
-		flush();
+		/* flush(); */
+		// The decompressed data is written to the output string
+		to.append((const char*)outbuf, sizeof(outbuf) - strm.avail_out);
+		// The next output position is reset 
+		strm.next_out = outbuf;
+		// The amount of free space in next_out is reset
+		strm.avail_out = sizeof outbuf;
 
 		// If the input stream is completely decompressed exit the loop
 		if (rc == LZMA_STREAM_END) break;
