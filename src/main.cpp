@@ -9,30 +9,30 @@
 #include <stdlib.h>
 using std::string;
 
-static void xzCompress(const char* from, std::string& to);
+static void xzCompress(const char* from, std::string& to, const char* fout);
 static void xzDecompress(const char* data, int length, std::string& to);
 static char* fileread(const char* in);
-static void filewrite(const char* input, const char* fout);
-static void stringTest(const char* i);
-static void nobyStringTest();
+static void filewrite(const char* input, const int size, const char* fout);
+/*static void stringTest(const char* i);
+static void nobyStringTest();*/
 
 int main()
 {
 	std::cout << "LZMA" << std::endl;
-	nobyStringTest();
+	//nobyStringTest();
 
 	char* read = fileread("D:/lzma_test.txt");
 	std::cout << read << std::endl;
 
 	std::string compressed;
-	xzCompress(read, compressed);
+	xzCompress(read, compressed, "D:/compressed.txt");
 	std::cout << compressed << std::endl;
-	filewrite(compressed.c_str(), "D:/compressed.txt");
+	//filewrite(compressed.data(), compressed.size(), "D:/compressed.txt");
 
 	std::string decompressed;
-	xzDecompress(compressed.c_str(), compressed.length(), decompressed);
+	xzDecompress(compressed.data(), compressed.length(), decompressed);
 	std::cout << decompressed << std::endl;
-	filewrite(decompressed.c_str(), "D:/decompressed.txt");
+	filewrite(decompressed.data(), decompressed.size(), "D:/decompressed.txt");
 
 	char c;
 	std::cin >> c;
@@ -41,10 +41,10 @@ int main()
 	return 0;
 }
 
-static void filewrite(const char* input, const char* fout) {
+static void filewrite(const char* input, const int size, const char* fout) {
 	FILE* file = fopen(fout, "w");
 
-	fwrite(input, 1, strlen(input), file);
+	fwrite(input, 1, size, file);
 
 	fclose(file);
 }
@@ -66,7 +66,7 @@ static char* fileread(const char* fin) {
 	size_t size = ftell(sFile);
 
 	// Allocate string space and set length
-	char* ss = (char*)malloc(size);
+	char* ss = (char*)malloc(size + 1);
 
 	if (ss == NULL) {
 		return false;
@@ -76,7 +76,8 @@ static char* fileread(const char* fin) {
 	rewind(sFile);
 
 	// Read 1*size bytes from sFile into ss
-	fread(ss, size, 1, sFile);
+	fread(ss, 1, size, sFile);
+	ss[size] = '\0';
 
 	// Close the file
 	fclose(sFile);
@@ -84,8 +85,8 @@ static char* fileread(const char* fin) {
 	return ss;
 }
 
-static void xzCompress(const char* from, std::string& to) {
-
+static void xzCompress(const char* from, std::string& to, const char* fout) {
+	FILE* file = fopen(fout, "w");
 
 	// lzma_stream is inizialized
 	lzma_stream strm = LZMA_STREAM_INIT;
@@ -122,6 +123,7 @@ static void xzCompress(const char* from, std::string& to) {
 			size_t write_size = sizeof(outbuf) - strm.avail_out;
 			// The compressed data is written to the output string
 			to.append((const char*)outbuf, write_size);
+			fwrite((const char*)outbuf, sizeof(char), write_size, file);
 			// The next output position is reset 
 			strm.next_out = outbuf;
 			// The amount of free space in next_out is reset
@@ -140,6 +142,7 @@ static void xzCompress(const char* from, std::string& to) {
 
 	// The memory alloced for the lzma_stream is freed
 	lzma_end(&strm);
+	fclose(file);
 }
 
 static void xzDecompress(const char* data, int length, std::string& to) {
@@ -335,7 +338,7 @@ static void xzDecompress_old(const char* data, int length, std::string& to) {
 	}
 }
 
-static void nobyStringTest() {
+/*static void nobyStringTest() {
 	std::string s;
 	xzCompress("Norbert is a communist and loves Karl Marx very much. Capitalism should die! This is worth of compression.", s);
 	std::cout << s << "\n";
@@ -353,4 +356,4 @@ static void stringTest(const char* i) {
 	std::string o;
 	xzDecompress(s.data(), s.length(), o);
 	std::cout << o << "\n";
-}
+}*/
