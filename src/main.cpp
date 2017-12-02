@@ -15,42 +15,28 @@ static void xzDecompress(const char* data, int length, std::string& to);
 static char* fileread(const char* in);
 static void filewrite(const char* input, const int size, const char* fout);
 
-int main()
-{
-	std::cout << "LZMA" << std::endl;
-	//nobyStringTest();
-
-	char* read = fileread("D:/lzma_test.txt");
-	std::cout << read << std::endl;
-
-	std::string compressed;
-	xzCompress(read, compressed, "D:/compressed.txt");
-	std::cout << compressed << std::endl;
-
-	std::string decompressed;
-	xzDecompress(compressed.data(), compressed.length(), decompressed);
-	std::cout << decompressed << std::endl;
-	filewrite(decompressed.data(), decompressed.size(), "D:/decompressed.txt");
-
-	char c;
-	std::cin >> c;
-
-	// all good
-	return 0;
-}
-
 typedef struct {
+	static const int BUFFER_SIZE = 4096;
+
 	lzma_stream strm;
 	FILE* fp;
-	char in[4096];
+
 	size_t in_size;
-	char out[4096];
+	uint8_t in[BUFFER_SIZE];
+
 	size_t out_size;
+	uint8_t out[BUFFER_SIZE];
 } LZMAFILE;
 
 LZMAFILE* lzmaopen(const char* filepath, const char* mode) {
 	LZMAFILE* file = (LZMAFILE*)malloc(sizeof(LZMAFILE));
 	file->strm = LZMA_STREAM_INIT;
+	// TODO: this has to be done better
+	// in this case, only reading is possible
+	// but writing (encoding) should also be possible
+	// NOTE: maybe make 2 lzma_streams?
+	if (lzma_stream_decoder(&file->strm, 99 * 1024 * 1024, LZMA_TELL_NO_CHECK) != LZMA_OK)
+		return NULL;
 	file->fp = fopen(filepath, mode);
 	file->in_size = 0;
 	file->out_size = 0;
@@ -64,21 +50,66 @@ void lzmaclose(LZMAFILE* file) {
 }
 
 size_t lzmaread(void* buffer, size_t size, size_t count, LZMAFILE* file) {
-	if (file->in_size < 4096) {
-		fread(file->in, sizeof(char), 4096 - file->in_size, file->fp);
-		file->in_size = 4096;
+	size_t amount = size * count;
+
+	file->strm.next_out = (uint8_t*)buffer;
+	file->strm.avail_out = amount;
+
+	while (file->strm.avail_out > 0) {
+		if (file->in_size == 0) {
+			size_t read = fread(file->in, sizeof(char), file->BUFFER_SIZE, file->fp);
+			file->in_size = read;
+		}
+
+		file->strm.next_in = file->in;
+		file->strm.avail_in = file->in_size;
+
+		lzma_ret rc = lzma_code(&file->strm, LZMA_RUN);
+
+		if (rc == LZMA_STREAM_END)
+			break;
+
+		if (rc != LZMA_OK)
+			return -1;
+
+		if (file->strm.avail_in > 0) {
+			// copy the rest from avail_in to BUFFER_SIZE to the beginning of in buffer
+			char tmp[4096];
+			memcpy(tmp, file->strm.next_in, file->strm.avail_in);
+			memcpy(file->in, tmp, file->strm.avail_in);
+		}
+		file->in_size = file->strm.avail_in;
 	}
 
-	file->strm.next_in = (uint8_t*)file->in;
-	file->strm.avail_in = file->in_size;
-	file->strm.next_out = (uint8_t*)buffer;
-	file->strm.avail_out = size*count;
-	lzma_ret rc = lzma_code(&file->strm, LZMA_FINISH);
-	if (rc != LZMA_OK)
-		return -1;
-	memcpy(buffer, file->in + (file->in_size - size*count), size*count);
-	file->in_size = file->in_size - size*count;
+	return size*count;
+}
 
+int main()
+{
+	std::cout << "LZMA" << std::endl;
+	//nobyStringTest();
+
+	char* read = fileread("resources/text.txt");
+	std::cout << read << std::endl;
+
+	std::string compressed;
+	xzCompress(read, compressed, "resources/compressed.txt");
+	std::cout << compressed << std::endl;
+
+	LZMAFILE* file = lzmaopen("resources/compressed.txt", "rb");
+	for (size_t i = 0; i < strlen(read); i++)
+	{
+		char c;
+		lzmaread(&c, sizeof(char), 1, file);
+		std::cout << c;
+	}
+	std::cout << std::endl;
+
+	char c;
+	std::cin >> c;
+
+	// all good
+	return 0;
 }
 
 static void filewrite(const char* input, const int size, const char* fout) {

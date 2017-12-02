@@ -1,0 +1,1 @@
+This is a text that will be compressed by the LZMA compression algorithm. Hopefully, everything will be good. :c

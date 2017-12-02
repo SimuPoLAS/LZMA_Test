@@ -8,6 +8,8 @@ project(LZMA_Test)
 file(GLOB_RECURSE dummy_SOURCES "src/*.cpp" "src/*.c")
 file(GLOB_RECURSE dummy_HEADERS "src/*.hpp" "src/*.h")
 
+file(COPY resources DESTINATION .)
+
 find_package(LibLZMA REQUIRED)
 include_directories(${LIBLZMA_INCLUDE_DIR})
 set(LIBS ${LIBS} ${LIBLZMA_LIBRARIES})
