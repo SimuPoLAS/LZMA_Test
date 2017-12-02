@@ -18,7 +18,8 @@ static void filewrite(const char* input, const int size, const char* fout);
 typedef struct {
 	static const int BUFFER_SIZE = 4096;
 
-	lzma_stream strm;
+	lzma_stream decode;
+	lzma_stream encode;
 	FILE* fp;
 
 	size_t in_size;
@@ -30,13 +31,17 @@ typedef struct {
 
 LZMAFILE* lzmaopen(const char* filepath, const char* mode) {
 	LZMAFILE* file = (LZMAFILE*)malloc(sizeof(LZMAFILE));
-	file->strm = LZMA_STREAM_INIT;
+	file->decode = LZMA_STREAM_INIT;
+	file->encode = LZMA_STREAM_INIT;
 	// TODO: this has to be done better
 	// in this case, only reading is possible
 	// but writing (encoding) should also be possible
-	// NOTE: maybe make 2 lzma_streams?
-	if (lzma_stream_decoder(&file->strm, 99 * 1024 * 1024, LZMA_TELL_NO_CHECK) != LZMA_OK)
+	// NOTE: maybe make 2 lzma_streams? => now using 2 lzma_streams
+	if (lzma_stream_decoder(&file->decode, 99 * 1024 * 1024, LZMA_TELL_NO_CHECK) != LZMA_OK)
 		return NULL;
+	if (lzma_easy_encoder(&file->encode, 6, LZMA_CHECK_CRC32) != LZMA_OK)
+		return NULL;
+
 	file->fp = fopen(filepath, mode);
 	file->in_size = 0;
 	file->out_size = 0;
@@ -44,27 +49,26 @@ LZMAFILE* lzmaopen(const char* filepath, const char* mode) {
 }
 
 void lzmaclose(LZMAFILE* file) {
-	lzma_end(&file->strm);
+	lzma_end(&file->decode);
+	lzma_end(&file->encode);
 	fclose(file->fp);
 	free(file);
 }
 
 size_t lzmaread(void* buffer, size_t size, size_t count, LZMAFILE* file) {
-	size_t amount = size * count;
+	file->decode.next_out = (uint8_t*)buffer;
+	file->decode.avail_out = size * count;
 
-	file->strm.next_out = (uint8_t*)buffer;
-	file->strm.avail_out = amount;
-
-	while (file->strm.avail_out > 0) {
+	while (file->decode.avail_out > 0) {
 		if (file->in_size == 0) {
 			size_t read = fread(file->in, sizeof(char), file->BUFFER_SIZE, file->fp);
 			file->in_size = read;
 		}
 
-		file->strm.next_in = file->in;
-		file->strm.avail_in = file->in_size;
+		file->decode.next_in = file->in;
+		file->decode.avail_in = file->in_size;
 
-		lzma_ret rc = lzma_code(&file->strm, LZMA_RUN);
+		lzma_ret rc = lzma_code(&file->decode, LZMA_RUN);
 
 		if (rc == LZMA_STREAM_END)
 			break;
@@ -72,16 +76,46 @@ size_t lzmaread(void* buffer, size_t size, size_t count, LZMAFILE* file) {
 		if (rc != LZMA_OK)
 			return -1;
 
-		if (file->strm.avail_in > 0) {
+		if (file->decode.avail_in > 0) {
 			// copy the rest from avail_in to BUFFER_SIZE to the beginning of in buffer
 			char tmp[4096];
-			memcpy(tmp, file->strm.next_in, file->strm.avail_in);
-			memcpy(file->in, tmp, file->strm.avail_in);
+			memcpy(tmp, file->decode.next_in, file->decode.avail_in);
+			memcpy(file->in, tmp, file->decode.avail_in);
 		}
-		file->in_size = file->strm.avail_in;
+		file->in_size = file->decode.avail_in;
 	}
 
 	return size*count;
+}
+
+size_t lzmawrite(void* buffer, size_t size, size_t count, LZMAFILE* file) {
+	file->encode.next_in = (uint8_t*)buffer;
+	file->encode.avail_in = size * count;
+	
+	uint8_t encoded[4096];
+	file->encode.next_out = encoded;
+	file->encode.avail_out = sizeof(encoded);
+
+	for (;;) {
+		lzma_ret ret = lzma_code(&file->encode, LZMA_FINISH);
+
+		if (file->encode.avail_out == 0 || ret == LZMA_STREAM_END) {
+			size_t written = sizeof(encoded) - file->encode.avail_out;
+
+			fwrite(encoded, sizeof(uint8_t), written, file->fp);
+			
+			file->encode.next_out = encoded;
+			file->encode.avail_out = sizeof(encoded);
+		}
+
+		if (ret == LZMA_STREAM_END) break;
+
+		if (ret == LZMA_OK) continue;
+
+		return -1;
+	}
+
+	return size * count;
 }
 
 int main()
