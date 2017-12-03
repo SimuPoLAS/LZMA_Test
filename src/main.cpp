@@ -48,7 +48,24 @@ LZMAFILE* lzmaopen(const char* filepath, const char* mode) {
 	return file;
 }
 
-void lzmaclose(LZMAFILE* file) {
+int lzmaclose(LZMAFILE* file) {
+	for (;;) {
+		lzma_ret ret = lzma_code(&file->encode, LZMA_FINISH);
+		file->out_size = file->BUFFER_SIZE - file->encode.avail_out;
+
+		if (file->encode.avail_out == 0 || ret == LZMA_STREAM_END) {
+			fwrite(file->out, sizeof(uint8_t), file->out_size, file->fp);
+
+			file->encode.next_out = file->out;
+			file->encode.avail_out = file->BUFFER_SIZE;
+			file->out_size = 0;
+		}
+
+		if (ret == LZMA_STREAM_END) break;
+
+		if (ret != LZMA_OK) return -1;
+	}
+
 	lzma_end(&file->decode);
 	lzma_end(&file->encode);
 	fclose(file->fp);
@@ -92,20 +109,18 @@ size_t lzmawrite(void* buffer, size_t size, size_t count, LZMAFILE* file) {
 	file->encode.next_in = (uint8_t*)buffer;
 	file->encode.avail_in = size * count;
 	
-	uint8_t encoded[4096];
-	file->encode.next_out = encoded;
-	file->encode.avail_out = sizeof(encoded);
+	file->encode.next_out = file->out + file->out_size;
+	file->encode.avail_out = file->BUFFER_SIZE - file->out_size;
 
-	for (;;) {
-		lzma_ret ret = lzma_code(&file->encode, LZMA_FINISH);
+	while (file->encode.avail_in > 0) {
+		lzma_ret ret = lzma_code(&file->encode, LZMA_RUN);
+		file->out_size = file->BUFFER_SIZE - file->encode.avail_out;
 
 		if (file->encode.avail_out == 0 || ret == LZMA_STREAM_END) {
-			size_t written = sizeof(encoded) - file->encode.avail_out;
-
-			fwrite(encoded, sizeof(uint8_t), written, file->fp);
+			fwrite(file->out, sizeof(uint8_t), file->BUFFER_SIZE, file->fp);
 			
-			file->encode.next_out = encoded;
-			file->encode.avail_out = sizeof(encoded);
+			file->encode.next_out = file->out;
+			file->encode.avail_out = file->BUFFER_SIZE;
 		}
 
 		if (ret == LZMA_STREAM_END) break;
@@ -123,21 +138,44 @@ int main()
 	std::cout << "LZMA" << std::endl;
 	//nobyStringTest();
 
-	char* read = fileread("resources/text.txt");
-	std::cout << read << std::endl;
+	//char* read = fileread("resources/text.txt");
+	//std::cout << read << std::endl;
 
-	std::string compressed;
-	xzCompress(read, compressed, "resources/compressed.txt");
-	std::cout << compressed << std::endl;
-
-	LZMAFILE* file = lzmaopen("resources/compressed.txt", "rb");
-	for (size_t i = 0; i < strlen(read); i++)
-	{
-		char c;
-		lzmaread(&c, sizeof(char), 1, file);
-		std::cout << c;
-	}
 	std::cout << std::endl;
+	std::string text;
+	{
+		LZMAFILE* en = lzmaopen("resources/compressed.txt", "wb");
+		FILE* in = fopen("resources/text.txt", "rb");
+		for (;;)
+		{
+			char c = fgetc(in);
+			if (feof(in))
+				break;
+			text.push_back(c);
+			lzmawrite(&c, sizeof(char), 1, en);
+		}
+		lzmaclose(en);
+	}
+	std::cout << "before compression:" << std::endl;
+	std::cout << text << std::endl;
+
+	std::cout << std::endl;
+	std::string original;
+	{
+		LZMAFILE* de = lzmaopen("resources/compressed.txt", "rb");
+		for (int i = 0; i < text.size(); i++)
+		{
+			char c;
+			lzmaread(&c, sizeof(char), 1, de);
+			original.push_back(c);
+		}
+		lzmaclose(de);
+	}
+	std::cout << "after compression:" << std::endl;
+	std::cout << original << std::endl;
+
+	std::cout << std::endl;
+	std::cout << "should be the same" << std::endl;
 
 	char c;
 	std::cin >> c;
